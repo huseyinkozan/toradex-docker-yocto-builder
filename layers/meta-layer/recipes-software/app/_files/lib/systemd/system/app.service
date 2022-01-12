@@ -1,0 +1,12 @@
+[Unit]
+Description=_____________app_____________
+Requires=systemd-logind.service
+After=systemd-logind.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/start-app.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

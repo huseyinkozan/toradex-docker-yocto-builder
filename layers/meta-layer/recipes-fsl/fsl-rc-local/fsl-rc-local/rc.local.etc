@@ -1,0 +1,50 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+
+
+if [ ! -f /etc/first-time-setup-done ];then
+
+  echo "Doing first time setup ..."
+
+  echo "Disabling services"
+  systemctl -q is-enabled avahi-daemon.service                    && systemctl disable avahi-daemon.service
+  systemctl -q is-enabled bluetooth.service                       && systemctl disable bluetooth.service
+  systemctl -q is-enabled bluez-alsa.service                      && systemctl disable bluez-alsa.service
+  systemctl -q is-enabled dbus-org.bluez.service                  && systemctl disable dbus-org.bluez.service
+  systemctl -q is-enabled dbus-org.freedesktop.Avahi.service      && systemctl disable dbus-org.freedesktop.Avahi.service
+  systemctl -q is-enabled dbus-org.freedesktop.timesync1.service  && systemctl disable dbus-org.freedesktop.timesync1.service
+  systemctl -q is-enabled dbus-org.neard.service                  && systemctl disable dbus-org.neard.service
+  systemctl -q is-enabled ip6tables.service                       && systemctl disable ip6tables.service
+  systemctl -q is-enabled neard.service                           && systemctl disable neard.service
+  systemctl -q is-enabled nfs-statd.service                       && systemctl disable nfs-statd.service
+  systemctl -q is-enabled ofono.service                           && systemctl disable ofono.service
+  systemctl -q is-enabled rpcbind.service                         && systemctl disable rpcbind.service
+  systemctl -q is-enabled systemd-timesyncd.service               && systemctl disable systemd-timesyncd.service
+
+  systemctl -q is-enabled avahi-daemon.socket                     && systemctl disable avahi-daemon.socket
+  systemctl -q is-enabled gpsd.socket                             && systemctl disable gpsd.socket
+  systemctl -q is-enabled rpcbind.socket                          && systemctl disable rpcbind.socket
+
+  echo "Setting HDMI Overlay"
+  echo "fdt_overlays=colibri-imx6_hdmi_overlay.dtbo"    >  /boot/overlays.txt
+
+  echo "Setting static IP"
+  if [ -f /usr/share/app/wired.network.static.sample.txt ]; then
+    cp /usr/share/app/wired.network.static.sample.txt /etc/systemd/network/wired.network
+  fi
+
+  touch /etc/first-time-setup-done
+fi
+
+exit 0

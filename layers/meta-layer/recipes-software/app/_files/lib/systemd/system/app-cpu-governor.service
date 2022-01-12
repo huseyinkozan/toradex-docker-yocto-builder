@@ -1,0 +1,12 @@
+[Unit]
+Description=___ app cpu governor ___
+Requires=-.mount
+After=-.mount
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/set-cpu-governor.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

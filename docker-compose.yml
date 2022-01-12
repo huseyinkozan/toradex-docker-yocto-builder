@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  builder:
+    build: ./builder
+    volumes:
+      - $HOME/.gitconfig:/home/yoctouser/.gitconfig:ro
+      - ${MY_YOCTO_DEPLOY}:/yocto-deploy
+      - ${MY_YOCTO_DOWNLOADS}:/yocto-downloads
+      - ${MY_YOCTO_SSTATE}:/yocto-sstate
+      - ${MY_YOCTO_TMP}:/yocto-tmp
+      - ${MY_YOCTO_LAYERS}:/yocto/layers
+      - ./build/conf:/yocto/build/conf
+      - ./layers:/yocto-layers

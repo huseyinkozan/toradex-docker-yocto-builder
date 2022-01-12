@@ -1,0 +1,15 @@
+# Not tested !!!
+# Resources : 
+#   https://www.freedesktop.org/software/systemd/man/systemd.link.html#MTUBytes=
+#   http://coreos.com/blog/intro-to-systemd-networkd/
+#
+# Note: systemd version is 244 (244.5+) !
+#
+
+
+[Match]
+OriginalName=eth0
+
+[Link]
+MTUBytes=1200
+BitsPerSecond=10M

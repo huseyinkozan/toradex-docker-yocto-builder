@@ -1,0 +1,10 @@
+# ignore .env
+.env
+
+# ignore extracted ipk package dirs
+extract-ipk-*/
+
+
+# ignore all but .gitkeep inside data/
+# /data/** 
+# !**/.gitkeep

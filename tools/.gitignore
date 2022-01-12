@@ -1,0 +1,2 @@
+# ignore extracted ipk package dirs
+extract-ipk-*/
