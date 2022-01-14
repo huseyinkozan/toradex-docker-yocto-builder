@@ -30,6 +30,24 @@ Do below steps to setup;
   docker-compose up --build --no-start
   ```
   At any change to `.env` file, you may need to run above command.
+* Take a look at `build/conf/local.conf` file and change for your needs. You may want to;
+  * Set `MACHINE`,
+  * Set `EXTRA_IMAGE_FEATURES`,
+  * Uncomment license lines.
+
+  Please do not change dirs that start with `/yocto-*`, unless know what you are doing.
+
+
+## Additional Contents
+
+Repo contains additionally;
+
+* A  [rc.local](layers/meta-layer/recipes-fsl/fsl-rc-local/fsl-rc-local/rc.local.etc) file that setups for first launch.
+* A message only [example](layers/meta-layer/recipes-example/example/example_0.1.bb).
+* Some images located at [images](layers/meta-layer/recipes-images/images).
+* An example [app](layers/meta-layer/recipes-software/app/app_git.bb).
+
+
 
 ## Usage
 
