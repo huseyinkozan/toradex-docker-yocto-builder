@@ -10,8 +10,16 @@ can build Toradex images.
 
 * GNU/Linux distro which have Docker support.
   * Tested with Ubuntu 20.04 and Manjaro.
-* [Docker](https://docs.docker.com/compose/install/) and [Docker  Compose](https://docs.docker.com/compose/install/).
+* Install Docker and Docker Compose.
+  * [Docker Install](https://docs.docker.com/engine/install/) 
+  * [Docker Linux Post Install](https://docs.docker.com/engine/install/linux-postinstall/)
+  * [Docker Compose Install](https://docs.docker.com/compose/install/)
 * A disk path that have at least 60GB free space.
+* Configure git. See [here](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration) for more info.
+  ```bash
+  $ git config --global user.name "John Doe"
+  $ git config --global user.email johndoe@example.com
+  ```
 
 
 ## First Time Setup
@@ -20,6 +28,8 @@ Do below steps to setup;
 
 * Create temporary dirs with helper tool;
   ```bash
+  cd <where-this-project-located>
+  
   ./tools/create-tmp-dirs.sh  /disk-path-that-have-lots-of-space  tmp-dir-name
   ```
   Path should have at least 60GB disk space. You may want to check `.env` file before use. 
@@ -27,6 +37,8 @@ Do below steps to setup;
   If you are planning to use multiple builders, you should consider sharing downloads dir with `MY_YOCTO_DOWNLOADS` variable.
 * Build container:
   ```bash
+  cd <where-this-project-located>
+  
   docker-compose up --build --no-start
   ```
   At any change to `.env` file, you may need to run above command.
@@ -53,6 +65,8 @@ Repo contains additionally;
 
 To start and enter the container;
 ```bash
+cd <where-this-project-located>
+
 ./start.sh
 ```
 
@@ -71,6 +85,8 @@ For more information; [Toradex Wiki: openembedded-core](https://developer.torade
 
 You can extract ipk with `extract-ipk.sh`. For ex;
 ```bash
+cd <where-this-project-located>
+
 ./tools/extract-ipk.sh  app
 ```
 Command will extract `/usr/bin/*` files into `tools/extract-ipk-app/` dir.
@@ -82,6 +98,8 @@ Default user is `yoctouser`. Probably, you will not need the root user while usi
 
 If you need, run below commands to use the `root` user.
 ```bash
+cd <where-this-project-located>
+
 docker-compose start
 docker-compose exec -u root builder bash
 ```
