@@ -32,7 +32,7 @@ Do below steps to setup;
   
   ./tools/create-tmp-dirs.sh  /disk-path-that-have-lots-of-space  tmp-dir-name
   ```
-  Path should have at least 60GB disk space. You may want to check `.env` file before use. ls
+  Path should have at least 60GB disk space. You may want to check `.env` file before use.
 
   If you are planning to use multiple builders, you should consider sharing downloads dir with `MY_YOCTO_DOWNLOADS` variable.
 * Build container:
