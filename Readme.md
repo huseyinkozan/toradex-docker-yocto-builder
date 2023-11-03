@@ -32,7 +32,7 @@ Do below steps to setup;
   
   ./tools/create-tmp-dirs.sh  /disk-path-that-have-lots-of-space  tmp-dir-name
   ```
-  Path should have at least 60GB disk space. You may want to check `.env` file before use. 
+  Path should have at least 60GB disk space. You may want to check `.env` file before use.
 
   If you are planning to use multiple builders, you should consider sharing downloads dir with `MY_YOCTO_DOWNLOADS` variable.
 * Build container:
@@ -48,6 +48,27 @@ Do below steps to setup;
   * Uncomment license lines.
 
   Please do not change dirs that start with `/yocto-*`, unless know what you are doing.
+
+* Start container;
+  ```bash
+  ./start.sh
+  ```
+
+* Fetch layers with repo tool.
+
+  ```bash
+  repo init -u https://git.toradex.com/toradex-manifest.git -m tdxref/default.xml -b refs/tags/6.4.0
+  repo sync -j16  # -jXX: cpu core count
+  ```
+
+  Open a second console, and fix permissions before exit;
+  ```bash
+  docker-compose exec -u root builder bash
+
+  chown yoctouser:yoctouser -R /yocto
+  ```
+
+
 
 
 ## Additional Contents

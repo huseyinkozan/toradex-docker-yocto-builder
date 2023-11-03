@@ -4,17 +4,17 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 # DEPENDS = ""
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
   bash \
   cpufrequtils \
 "
 
-FILESEXTRAPATHS_prepend := "${THISDIR}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}:"
 SRC_URI += " \
   file://_files \
 "
 
-do_install_append() {
+do_install:append() {
 
   # etc
   install -d ${D}${sysconfdir}/app/
@@ -33,7 +33,7 @@ do_install_append() {
   install -m 0644 ${WORKDIR}/_files/usr/share/app/*.txt           ${D}${datadir}/app/
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
   \
   ${sysconfdir}/app/ \
   \
@@ -43,6 +43,6 @@ FILES_${PN} += " \
   ${datadir}/app/ \
 "
 
-SYSTEMD_SERVICE_${PN} = "app.service"
-SYSTEMD_SERVICE_${PN} += " app-cpu-governor.service"
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_SERVICE:${PN} = "app.service"
+SYSTEMD_SERVICE:${PN} += " app-cpu-governor.service"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"

@@ -1,23 +1,27 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 # enable apt features and update
 RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt dist-upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
-RUN DEBIAN_FRONTEND=noninteractive add-apt-repository universe
+RUN DEBIAN_FRONTEND=noninteractive add-apt-repository universe multiverse
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 
 # Copied required packages from;
 #  https://www.yoctoproject.org/docs/3.1.1/mega-manual/mega-manual.html#required-packages-for-the-build-host
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        gawk wget git-core diffstat unzip texinfo gcc-multilib \
         build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
         xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
-        pylint3 xterm
+        gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat \
+        cpio python3 python3-pip python3-pexpect xz-utils debianutils \
+        iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+        pylint xterm python3-subunit mesa-common-dev zstd liblz4-tool \
+         xterm
 #  https://www.yoctoproject.org/docs/3.1.1/mega-manual/mega-manual.html#migration-3.1-minimum-system-requirements
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
         libc-dev-bin
 # Other useful packages
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
         screen \
         tmux \
@@ -44,9 +48,8 @@ ENV LANG en_US.utf8
 # repo needs git, python, wget to download repo
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
         wget git-core python3 python3-pip python3-pexpect python3-git python3-jinja2
-# fix for the shebang
-RUN ln -s /usr/bin/pip3 /usr/bin/pip && \
-    ln -s /usr/bin/python3 /usr/bin/python
+# fix for the sheban
+RUN ln -s /usr/bin/python3 /usr/bin/python
 # download repo tool from google
 RUN wget https://storage.googleapis.com/git-repo-downloads/repo -O /usr/local/bin/repo && \
     chmod +x /usr/local/bin/repo
@@ -66,23 +69,16 @@ RUN touch /home/yoctouser/.bashrc
 RUN echo "source /"
 
 RUN echo '\n\
-if [ -d /yocto ];then \n\
-\n\
+if [ -d /yocto ] && [ -z "$TMUX" ] ;then \n\
+  \n\
   echo "cd /yocto ..."\n\
   cd /yocto\n\
-\n\
-  if [ -z "$(ls -A /yocto/layers)" ]; then\n\
-    echo "/yocto/layers is empty. Dowloading with repo tool."\n\
-    echo "repo init ..."\n\
-    repo init -u https://git.toradex.com/toradex-manifest.git   -b refs/tags/5.4.0   -m tdxref/default.xml\n\
-    if [ $? -eq 0 ]; then\n\
-      echo "repo sync .."\n\
-      repo sync\n\
-    fi\n\
-  fi\n\
+  \n\
   if [ -f export ];then \n\
     echo ". export ..."\n\
     . export\n\
+  else\n\
+    echo "No export file. Please run repo tool !" \n\
   fi \n\
 fi \n\
 ' >> /home/yoctouser/.bashrc
